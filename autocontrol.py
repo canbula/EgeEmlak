@@ -78,7 +78,7 @@ def get_the_most_recent_file(folder=""):
 
 
 if __name__ == "__main__":
-    city = "aydin"
+    city = "izmir5"
     page = 1
     while True:
         print(f"{city} page {page} is downloading...")
@@ -92,7 +92,7 @@ if __name__ == "__main__":
         move_mouse(*extension_logo_position)
         print("Clicking the extension logo...")
         click_mouse()
-        time.sleep(1)
+        time.sleep(2)
         print("Finding the CSV button...")
         csv_button_position = img_position("csv_button.png")
         print("CSV button position: ", csv_button_position)
