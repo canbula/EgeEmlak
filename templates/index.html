@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ege Bölgesi için Makine Öğrenmesi Destekli Emlak Değerleme Analizi</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container-sm text-center">
+        <div class="row align-items-center">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-8">
+                <h3>Ege Bölgesi için Makine Öğrenmesi Destekli Emlak Değerleme Analizi</h3>
+                <form action="/predict" method="post">
+                    <div class="form-group">
+                        <label for="city">Konum</label>
+                        <select class="form-control" id="city" name="city">
+                            <option value="">Şehir</option>
+                            {% for city in cities %}
+                                <option value="{{ city }}">{{ city|capitalize }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="district"></label>
+                        <select class="form-control" id="district" name="district">
+                            <option value="">İlçe</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="neighborhood"></label>
+                        <select class="form-control" id="neighborhood" name="neighborhood">
+                            <option value="">Mahalle</option>
+                        </select>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label for="room">Oda Sayısı</label>
+                        <input type="range" class="form-range" id="room" name="room" min="1" max="10" step="1" value="3">
+                        <output for="room">3</output>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label for="living_room">Salon Sayısı</label>
+                        <input type="number" class="form-control" id="living_room" name="living_room" min="0" max="10" step="1" value="1">
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label for="area">Alan (m²)</label>
+                        <input type="range" class="form-range" id="area" name="area" min="1" max="500" step="1" value="120">
+                        <output for="area">120</output>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label for="age">Bina Yaşı</label>
+                        <input type="number" class="form-control" id="age" name="age" min="0" max="100" step="1" value="10">
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label for="floor">Bulunduğu Kat</label>
+                        <input type="number" class="form-control" id="floor" name="floor" min="0" max="100" step="1" value="2">
+                    </div>
+                    <hr>
+                    <button type="submit" class="btn btn-primary">Değerle</button>
+                </form>
+            </div>
+            <div class="col-sm-2"></div>
+        </div>
+    </div>
+    <script>
+        const capitalizeFirstLetter = (string) => {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        };
+        const cities = {{ cities|tojson }};
+        const districts = {{ districts|tojson }};
+        const neighborhoods = {{ neighborhoods|tojson }};
+        const citySelect = document.getElementById('city');
+        const districtSelect = document.getElementById('district');
+        const neighborhoodSelect = document.getElementById('neighborhood');
+        citySelect.addEventListener('change', (event) => {
+            districtSelect.innerHTML = '<option value="">İlçe</option>';
+            neighborhoodSelect.innerHTML = '<option value="">Mahalle</option>';
+            if (event.target.value) {
+                for (const district of districts[event.target.value]) {
+                    const option = document.createElement('option');
+                    option.value = district;
+                    option.textContent = capitalizeFirstLetter(district);
+                    districtSelect.appendChild(option);
+                }
+            }
+        });
+        districtSelect.addEventListener('change', (event) => {
+            neighborhoodSelect.innerHTML = '<option value="">Mahalle</option>';
+            if (event.target.value) {
+                for (const neighborhood of neighborhoods[citySelect.value][event.target.value]) {
+                    const option = document.createElement('option');
+                    option.value = neighborhood;
+                    option.textContent = capitalizeFirstLetter(neighborhood);
+                    neighborhoodSelect.appendChild(option);
+                }
+            }
+        });
+        const roomRange = document.getElementById('room');
+        const roomOutput = document.querySelector('output[for="room"]');
+        roomRange.addEventListener('input', (event) => {
+            roomOutput.textContent = event.target.value;
+        });
+        const areaRange = document.getElementById('area');
+        const areaOutput = document.querySelector('output[for="area"]');
+        areaRange.addEventListener('input', (event) => {
+            areaOutput.textContent = event.target.value;
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+</body>
+</html>
