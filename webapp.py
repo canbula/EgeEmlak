@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import numpy as np
 import pandas as pd
 from functools import lru_cache
@@ -61,7 +61,7 @@ def predict():
     print(user_input)
     model = joblib.load("hepsiemlak_model.pkl")
     prediction = model.predict(user_input)
-    print(prediction)
+    return jsonify({"price": round(prediction[0])})
 
 
 if __name__ == "__main__":
