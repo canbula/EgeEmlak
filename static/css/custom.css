@@ -1,0 +1,46 @@
+/* custom.css */
+
+/* Override Bootstrap primary color */
+.btn-primary {
+    background-color: #1e90ff;
+    border-color: #1e90ff;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+    background-color: #1c86ee;
+    border-color: #1c86ee;
+}
+
+/* Override Bootstrap secondary color */
+.btn-secondary {
+    background-color: #4682b4;
+    border-color: #4682b4;
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus,
+.btn-secondary:active {
+    background-color: #5a9bd4;
+    border-color: #5a9bd4;
+}
+
+/* Override Bootstrap info color */
+.alert-info {
+    background-color: #5bc0de;
+    border-color: #5bc0de;
+    color: #fff;
+}
+
+/* Override Bootstrap light color */
+.bg-light {
+    background-color: #b7ccde !important;
+    border: 0px 2px 2px 2px solid #3f4042 !important;
+}
+
+/* Override Bootstrap dark color */
+.bg-dark {
+    background-color: #1c1f26 !important;
+    color: #fff;
+}
