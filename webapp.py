@@ -2,11 +2,19 @@ from flask import Flask, render_template, request, jsonify
 import numpy as np
 import pandas as pd
 from functools import lru_cache
-import pickle
 import joblib
+import sys
+import os
+import io
 
 
 app = Flask(__name__)
+
+
+sys.path.insert(0, os.path.dirname(__file__))
+old_stdout = sys.stdout
+new_stdout = io.StringIO()
+sys.stdout = new_stdout
 
 
 @lru_cache
@@ -37,7 +45,7 @@ def index():
 
 @app.route("/predict", methods=["POST"])
 def predict():
-    cities, districts, neighborhoods = get_cities()
+    # cities, districts, neighborhoods = get_cities()
     city = request.form["city"]
     district = request.form["district"]
     neighborhood = request.form["neighborhood"]
@@ -58,11 +66,13 @@ def predict():
             "floor": [floor],
         }
     )
-    print(user_input)
-    model = joblib.load("hepsiemlak_model.pkl")
-    prediction = model.predict(user_input)
-    return jsonify({"price": round(prediction[0])})
+    regression_model = joblib.load("model_regression.pkl")
+    prediction = regression_model.predict(user_input)
+    # return jsonify({"price": round(prediction[0])})
+    classification_model = joblib.load("model_classification.pkl")
+    prediction_class = classification_model.predict(user_input)
+    return jsonify({"price": round(prediction[0]), "class": prediction_class[0]})
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
