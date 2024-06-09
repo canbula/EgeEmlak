@@ -1,6 +1,3 @@
-# todo
-Turn the y into categories instead of numerical values 
-
 # files
 
 ## codes01
@@ -14,3 +11,6 @@ applying the machine learning model for linear regression
 
 ## codes04
 applying the machine learning model for neural network
+
+## final
+all the codes combined to finalizing the project
